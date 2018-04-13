@@ -155,6 +155,7 @@ function init() {
                         ['.*', WSC.DirectoryEntryHandler.bind(null, fs)]]
         adminServer = new WSC.WebApplication({host:host,
                                               port:port,
+                                              optAllInterfaces: true,
                                               handlers:handlers,
                                               renderIndex:true,
                                               optRenderIndex:true,
