@@ -22,6 +22,10 @@ $(function(){
 
   $(".button-collapse").sideNav();
 
+  $('.multiple-url-mode').hide().removeClass('disabled').slideDown();
+  $('.multiple-url-mode').removeClass('disabled').show();
+
+
   $("#logout").click(function(){
     $('body').hide();
     window.location = 'http://log:out@'+address;
@@ -31,12 +35,15 @@ $(function(){
     data = d;
     $('#url').val(data.url).siblings('label, i').addClass('active');
     $('#username').val(data.username).siblings('label, i').addClass('active');
-    $('body').removeClass('loading');
+    $('#rotate-rate').val(data.rotaterate);
+
     if(data.headers){
       data.headers.forEach(function(header){
         addHeader(header);
       });  
     }
+    $('body').removeClass('loading');
+ 
   });
 
   $('.tooltip').tooltip();
@@ -64,6 +71,7 @@ $(function(){
     var url = $('#url').val();
     var username = $("#username").val();
     var password = $("#password").val();
+    var rotaterate = $("#rotate-rate").val(); 
     var passwordConfirm = $("#confirm_password").val();
     if(url && (url.indexOf("http://") >= 0 || url.indexOf("https://") >= 0 )){
       //url is valid
@@ -91,6 +99,7 @@ $(function(){
       if(password && password != data.password) newData['password'] = password;
       if(url != data.url) newData['url'] = url;
       newData['headers'] = getHeaders();
+      newData['rotaterate'] = rotaterate;
       $.ajax({
         url: "http://"+address+'/data',
         type: 'PUT',
