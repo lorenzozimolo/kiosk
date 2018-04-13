@@ -131,9 +131,9 @@ $(function(){
   }
   if(data.multipleurlmode) {
     $("#multiple-url-mode").val(data.multipleurlmode);
-    if(data.multipleurlmode == 'rotate'){
+    //if(data.multipleurlmode == 'rotate'){
       $('.rotate-rate').removeClass('disabled');
-    }
+    //}
   }
   if(data.allowprint) {
     $("#allowprint").prop("checked",true);
@@ -336,7 +336,8 @@ $(function(){
     if($("#multiple-url-mode").val() == 'rotate'){
       $('.rotate-rate').hide().removeClass('disabled').slideDown();
     }else{
-      $('.rotate-rate').slideUp();
+      //$('.rotate-rate').slideUp();
+      $('.rotate-rate').hide().removeClass('disabled').slideDown();
     }
   });
 
@@ -450,14 +451,14 @@ $(function(){
         }
       }
     }
-    if(multipleurlmode == 'rotate'){
+    //if(multipleurlmode == 'rotate'){
       if(rotaterate <= 0 ){
         rotaterate = false;
         error.push("The Multiple URL Rotate Rate must be greater then 0.");
       }
-    }else {
-      rotaterate = false;
-    }
+    //}else {
+    //  rotaterate = false;
+    //}
     if(remoteschedule){
       if(remotescheduleurl && (remotescheduleurl.indexOf("http://") >= 0 || remotescheduleurl.indexOf("https://") >= 0 )){
         //url is valid

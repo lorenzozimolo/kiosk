@@ -110,6 +110,9 @@ Pull requests are welcome.
 
 ## Changelog
 
+- v5.14.2
+  - Added ability to schedule tabs rotation with a specific rate
+
 - v5.14.1
   - Fix bug with keypresses not being recoginized (such as CTRL+A for opening local admin login).
   - updated icon

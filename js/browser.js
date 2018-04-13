@@ -47,6 +47,8 @@ $(function(){
   var clearcookies = false;
   var allowPrint = false;
   var localAdmin = false;
+  var scheduleByDuration = false;
+
 
   window.oncontextmenu = function(){return false};
   window.ondragstart = function(){return false};
@@ -125,8 +127,20 @@ $(function(){
     }
   }
 
+  function rotateTabs(){
+    if(contentURL.length > 1){
+      if (urlrotateindex < (contentURL.length-1)){
+        urlrotateindex++;
+      } else {
+        urlrotateindex = 0;
+      }
+      $('ul.tabs').tabs('select', 'browser' + urlrotateindex);
+    }
+  }
+
   function updateSchedule(){
     $.getJSON(scheduleURL, function(s) {
+
       if(s && s.length && !s.schedule) {
         var temp = s;
         s = {
@@ -144,17 +158,28 @@ $(function(){
       if(s && s.schedule && s.schedule.Value && s.schedule.Value.items && s.schedule.Value.items.length){
         var s = s.schedule.Value.items;
         for(var i = 0; i < s.length; i++){
+          scheduleByDuration = false;
           if(s[i].content && s[i].start && s[i].end){
             s[i].start = new Date(Date.parse(s[i].start));
             s[i].end = new Date(Date.parse(s[i].end));
             s[i].duration = (s[i].end - s[i].start) / 1000; //duration is in seconds
+          }else if(s[i].content && s[i].duration){
+            scheduleByDuration = true;
           }else{
             //item did not include start, end, or content: invalid
             s = s.splice(i--, 1);
           }
         }
         schedule = s;
-        checkSchedule();
+        if(scheduleByDuration) {
+          currentURL = [];
+          for(var i = 0; i < s.length; i++){
+            currentURL.push(s[i]);
+          }
+          loadContent(true);
+        } else {
+          checkSchedule();
+        }
       }
     });
   }
@@ -255,7 +280,7 @@ $(function(){
             chrome.runtime.sendMessage('reload'); //all other systems
           }
         },60*1000);
-     }
+     }  
      if(data.remoteschedule && data.remotescheduleurl){
        schedulepollinterval = data.schedulepollinterval ? data.schedulepollinterval : DEFAULT_SCHEDULE_POLL_INTERVAL;
        scheduleURL = data.remotescheduleurl.indexOf('?') >= 0 ? data.remotescheduleurl+'&kiosk_t='+Date.now() : data.remotescheduleurl+'?kiosk_t='+Date.now();
@@ -290,6 +315,9 @@ $(function(){
         defaultURL = contentURL[urlrotateindex];
         rotaterate = data.rotaterate ? data.rotaterate : DEFAULT_ROTATE_RATE;
         setInterval(rotateURL,rotaterate * 1000);
+     }else if(data.multipleurlmode == 'tabs' && data.rotaterate) {
+        rotaterate = data.rotaterate ? data.rotaterate : DEFAULT_ROTATE_RATE;
+        setInterval(rotateTabs,rotaterate * 1000);
      }
      currentURL = defaultURL;
      if(resetcache){

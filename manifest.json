@@ -1,11 +1,11 @@
 {
-  "name": "Kiosk",
+  "name": "ZIKiosk",
   "description": "Launch any URL as a full-screen kiosk.",
   "manifest_version": 2,
-  "version": "5.14.1",
+  "version": "5.14.2",
   "author": {
-    "name": "Matt Cook",
-    "email": "matt@lookitscook.com"
+    "name": "Lorenzo Zimolo",
+    "email": "zilog@tin.it"
   },
   "kiosk_enabled": true,
   "offline_enabled": true,
