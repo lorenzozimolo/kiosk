@@ -36,6 +36,10 @@ $(function(){
     $('#url').val(data.url).siblings('label, i').addClass('active');
     $('#username').val(data.username).siblings('label, i').addClass('active');
     $('#rotate-rate').val(data.rotaterate);
+    $('#useragent').val(data.useragent);
+    $('#authorization').val(data.authorization);
+    if(data.useragent) $('#useragent').val(data.useragent).siblings('label').addClass('active');
+    if(data.authorization) $('#authorization').val(data.authorization).siblings('label').addClass('active');
 
     if(data.headers){
       data.headers.forEach(function(header){
@@ -73,6 +77,8 @@ $(function(){
     var password = $("#password").val();
     var rotaterate = $("#rotate-rate").val(); 
     var passwordConfirm = $("#confirm_password").val();
+    var useragent = $("#useragent").val(); 
+    var authorization = $("#authorization").val();
     if(url && (url.indexOf("http://") >= 0 || url.indexOf("https://") >= 0 )){
       //url is valid
     }else{
@@ -100,6 +106,8 @@ $(function(){
       if(url != data.url) newData['url'] = url;
       newData['headers'] = getHeaders();
       newData['rotaterate'] = rotaterate;
+      newData['useragent'] = useragent;
+      newData['authorization'] = authorization;      
       $.ajax({
         url: "http://"+address+'/data',
         type: 'PUT',
