@@ -145,6 +145,9 @@ $(function(){
   if(data.hidegslidescontrols) {
     $("#hidegslidescontrols").prop("checked",true);
   }
+  if(data.hidetabslabels) {
+    $("#hidetabslabels").prop("checked",true);
+  }
   if(data.local) {
     $("#local").prop("checked",true);
     $('.local, .settings-detail').removeClass('disabled');
@@ -362,6 +365,7 @@ $(function(){
     var remote = $("#remote").is(':checked');
     var allowprint = $("#allowprint").is(':checked');
     var hidegslidescontrols = $("#hidegslidescontrols").is(':checked');
+    var hidetabslabels = $("#hidetabslabels").is(':checked');
     var local = $("#local").is(':checked');
     var restart = $("#restart").is(':checked');
     var restartday = $('#restartday').val();
@@ -502,6 +506,10 @@ $(function(){
       else chrome.storage.local.remove('allowprint');
       if(hidegslidescontrols) chrome.storage.local.set({'hidegslidescontrols':hidegslidescontrols});
       else chrome.storage.local.remove('hidegslidescontrols');
+      if(hidetabslabels) chrome.storage.local.set({'hidetabslabels':hidetabslabels});
+      else chrome.storage.local.remove('hidetabslabels');
+
+
       if(local) chrome.storage.local.set({'local':local});
       else chrome.storage.local.remove('local');
       if(remote) chrome.storage.local.set({'remote':remote});

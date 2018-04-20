@@ -35,6 +35,8 @@ $(function(){
   var whitelist;
   var schedule,scheduleURL,contentURL,defaultURL,currentURL,updateScheduleTimeout,checkScheduleTimeout,schedulepollinterval;
   var hidegslidescontrols = false;
+  var hidetabslabels = false;
+  var multipleurlmode;
   var hidecursor = false;
   var disablecontextmenu = false;
   var disabledrag = false;
@@ -291,6 +293,7 @@ $(function(){
      }
 
      hidegslidescontrols = !!data.hidegslidescontrols;
+     hidetabslabels = data.hidetabslabels ? true : false;
      hidecursor = data.hidecursor ? true : false;
      disablecontextmenu = data.disablecontextmenu ? true : false;
      disabledrag = data.disabledrag ? true : false;
@@ -313,6 +316,8 @@ $(function(){
      useragent = data.useragent;
      authorization = data.authorization;
      headers = data.headers;
+     multipleurlmode = data.multipleurlmode;
+
      if(data.multipleurlmode == 'rotate'){
         defaultURL = contentURL[urlrotateindex];
         rotaterate = data.rotaterate ? data.rotaterate : DEFAULT_ROTATE_RATE;
@@ -683,6 +688,11 @@ $(function(){
       $tabs.addClass('scroll');
     }else{
       $tabs.removeClass('scroll');
+    }
+
+    if(hidetabslabels && multipleurlmode == 'tabs') {
+      $('body.tabbed #content').css('top','4px');
+      $tabs.css('height', '4px');
     }
     $tabs.tabs({ onShow: function(tab) { setNavStatus(); } });
   }
