@@ -46,6 +46,33 @@ $(function(){
         addHeader(header);
       });  
     }
+
+    // remote scheduler
+    if(data.remoteschedule){
+      $("#remote-schedule").prop("checked",true);
+      $('.remote-schedule-detail').removeClass('disabled');
+    }
+    if(data.remotescheduleurl)
+      $("#remote-schedule-url").val(data.remotescheduleurl).siblings('label').addClass('active');
+    if(data.schedulepollinterval){
+     $('#schedule-poll-interval').val(data.schedulepollinterval);
+    }
+    $("#remote").on('change',function(){
+      if($("#remote").is(':checked')){
+        $('.remote').hide().removeClass('disabled').slideDown();
+      }else{
+        $('.remote').slideUp();
+      }
+    });
+    $("#remote-schedule").on('change',function(){
+      if($("#remote-schedule").is(':checked')){
+        $('.remote-schedule-detail').hide().removeClass('disabled').slideDown();
+      }else{
+        $('.remote-schedule-detail').slideUp();
+      }
+    });
+
+
     $('body').removeClass('loading');
  
   });
@@ -79,6 +106,9 @@ $(function(){
     var passwordConfirm = $("#confirm_password").val();
     var useragent = $("#useragent").val(); 
     var authorization = $("#authorization").val();
+    var remote = $("#remote").is(':checked');
+    var remotescheduleurl = $("#remote-schedule-url").val();
+    var schedulepollinterval = $("#schedule-poll-interval").val();
     if(url && (url.indexOf("http://") >= 0 || url.indexOf("https://") >= 0 )){
       //url is valid
     }else{
@@ -107,7 +137,11 @@ $(function(){
       newData['headers'] = getHeaders();
       newData['rotaterate'] = rotaterate;
       newData['useragent'] = useragent;
-      newData['authorization'] = authorization;      
+      newData['authorization'] = authorization;  
+      newData['remote'] = remote;
+      newData['remotescheduleurl'] = remotescheduleurl;
+      newData['schedulepollinterval'] = schedulepollinterval;
+      
       $.ajax({
         url: "http://"+address+'/data',
         type: 'PUT',
