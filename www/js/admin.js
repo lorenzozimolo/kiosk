@@ -106,7 +106,7 @@ $(function(){
     var passwordConfirm = $("#confirm_password").val();
     var useragent = $("#useragent").val(); 
     var authorization = $("#authorization").val();
-    var remote = $("#remote").is(':checked');
+    var remoteschedule = $("#remote-schedule").is(':checked');
     var remotescheduleurl = $("#remote-schedule-url").val();
     var schedulepollinterval = $("#schedule-poll-interval").val();
     if(url && (url.indexOf("http://") >= 0 || url.indexOf("https://") >= 0 )){
@@ -121,9 +121,25 @@ $(function(){
       error.push("Passwords must match.");
     }
 
+    if(remoteschedule){
+      if(remotescheduleurl && (remotescheduleurl.indexOf("http://") >= 0 || remotescheduleurl.indexOf("https://") >= 0 )){
+        //url is valid
+        if(schedulepollinterval <= 0 ){
+          schedulepollinterval = false;
+          error.push("Schedule Poll Interval must be greater then 0.");
+        }
+      }else{
+        schedulepollinterval = false;
+        error.push("Schedule URL must be valid.");
+      }
+    }else{
+      schedulepollinterval = false;
+    }
+
+
     if(error.length){
       for(var i = 0; i < error.length; i++){
-        toast(error[i], 4000);
+        Materialize.toast(error[i], 4000);
       }
       return false;
     }else{
@@ -138,7 +154,7 @@ $(function(){
       newData['rotaterate'] = rotaterate;
       newData['useragent'] = useragent;
       newData['authorization'] = authorization;  
-      newData['remote'] = remote;
+      newData['remoteschedule'] = remoteschedule;
       newData['remotescheduleurl'] = remotescheduleurl;
       newData['schedulepollinterval'] = schedulepollinterval;
       
