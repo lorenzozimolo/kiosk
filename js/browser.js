@@ -51,7 +51,7 @@ $(function(){
   var allowPrint = false;
   var localAdmin = false;
   var scheduleByDuration = false;
-
+  var scheduleOnlyURLs = false;
 
   window.oncontextmenu = function(){return false};
   window.ondragstart = function(){return false};
@@ -144,6 +144,8 @@ $(function(){
   function updateSchedule(){
     $.getJSON(scheduleURL, function(s) {
 
+      //console.log(JSON.stringify(s));
+
       if(s && s.length && !s.schedule) {
         var temp = s;
         s = {
@@ -154,32 +156,43 @@ $(function(){
           }
         }
       }
+
       if(s && s.schedule && s.schedule.Value && s.schedule.Value.length){
         //support schedule.Value as structure or array containing structure
         s.schedule.Value = s.schedule.Value[0];
       }
+
       if(s && s.schedule && s.schedule.Value && s.schedule.Value.items && s.schedule.Value.items.length){
         var s = s.schedule.Value.items;
+        currentURL = [];
+        schedule = [];
+        scheduleByDuration = false;
         for(var i = 0; i < s.length; i++){
-          scheduleByDuration = false;
           if(s[i].content && s[i].start && s[i].end){
             s[i].start = new Date(Date.parse(s[i].start));
             s[i].end = new Date(Date.parse(s[i].end));
             s[i].duration = (s[i].end - s[i].start) / 1000; //duration is in seconds
+            schedule.push(s[i]);
           }else if(s[i].content && s[i].duration){
             scheduleByDuration = true;
+            schedule.push(s[i]);
           }else{
             //item did not include start, end, or content: invalid
-            s = s.splice(i--, 1);
+            //s = s.splice(i--, 1);
+            currentURL.push(s[i]);
           }
         }
-        schedule = s;
-        if(scheduleByDuration) {
-          currentURL = [];
+        //schedule = s;
+
+        scheduleOnlyURLs = !scheduleByDuration && schedule.length == 0;
+        if(scheduleOnlyURLs) {
+           // empty: just to remind 
+          loadContent(false);
+        } else if(scheduleByDuration) {
           for(var i = 0; i < s.length; i++){
             currentURL.push(s[i]);
           }
-          loadContent(true);
+          loadContent(false);
         } else {
           checkSchedule();
         }
@@ -288,8 +301,10 @@ $(function(){
        schedulepollinterval = data.schedulepollinterval ? data.schedulepollinterval : DEFAULT_SCHEDULE_POLL_INTERVAL;
        scheduleURL = data.remotescheduleurl.indexOf('?') >= 0 ? data.remotescheduleurl+'&kiosk_t='+Date.now() : data.remotescheduleurl+'?kiosk_t='+Date.now();
        updateSchedule();
-       setInterval(updateSchedule,schedulepollinterval * 60 * 1000);
-       setInterval(checkSchedule,CHECK_SCHEDULE_DELAY);
+       //if(!scheduleOnlyURLs) {
+         setInterval(updateSchedule,schedulepollinterval * 60 * 1000);
+         setInterval(checkSchedule,CHECK_SCHEDULE_DELAY);
+       //}
      }
 
      hidegslidescontrols = !!data.hidegslidescontrols;
@@ -558,7 +573,7 @@ $(function(){
             return;
           }
         }
-	      if(useragent) e.target.setUserAgentOverride(useragent);
+        if(useragent) e.target.setUserAgentOverride(useragent);
         if(reset){
           ACTIVE_EVENTS.split(' ').forEach(function(type,i){
             $webview[0].executeScript({
