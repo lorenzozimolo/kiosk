@@ -569,7 +569,7 @@ $(function(){
      });
      $webview[0].request.onBeforeSendHeaders.addListener(
         function(details) {
-          if (authorization) {
+          if (authorization && currentURL.includes(details.url)) {
             details.requestHeaders.push({name: 'Authorization', value: authorization})
           }
           if (headers){

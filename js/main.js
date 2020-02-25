@@ -83,7 +83,24 @@ function init() {
         //make setup page available remotely via HTTP
         startWebserver(data.host,data.port,'www',data);
       }
-      openWindow("windows/browser.html");
+
+
+      //chrome.system.display.getInfo({ singleUnified: true }, function(display_properties){
+
+      //  let id = display_properties[0].id;
+      //  let displayOptions = {
+      //    "displayZoomFactor": 1.5
+      //    
+      //  };
+
+      //  chrome.system.display.setDisplayProperties(id, displayOptions, function() {
+      //    console.log("error setting zoom:", chrome.runtime.lastError);
+      //  });
+        openWindow("windows/browser.html");
+
+      //});
+
+
     }else{
       //need to run setup
       openWindow("windows/setup.html");
