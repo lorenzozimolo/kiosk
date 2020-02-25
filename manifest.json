@@ -1,5 +1,5 @@
 {
-  "name": "ZIKioskTest",
+  "name": "ZIKioskDev",
   "description": "Launch any URL as a full-screen kiosk.",
   "manifest_version": 2,
   "version": "6.0.0",
