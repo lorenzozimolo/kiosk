@@ -93,7 +93,8 @@ function init() {
       //  chrome.system.display.setDisplayProperties(id, displayOptions, function() {
       //    console.log("error setting zoom:", chrome.runtime.lastError);
       //  });
-      openWindow("windows/browser.html");
+        openWindow("windows/browser.html");
+
       //});
     }else{
       //need to run setup
