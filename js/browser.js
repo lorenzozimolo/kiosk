@@ -569,7 +569,7 @@ $(function(){
      });
      $webview[0].request.onBeforeSendHeaders.addListener(
         function(details) {
-          if (authorization && currentURL.includes(details.url)) {
+          if (authorization && (isHostInList(details.url,currentURL))) {
             details.requestHeaders.push({name: 'Authorization', value: authorization})
           }
           if (headers){
@@ -778,6 +778,33 @@ $(function(){
         }
       });
     });
+  }
+
+  function isHostInList(url,urls) {
+    for(var i = 0; i < urls.length; i++) {
+      if(extractHostName(url) == extractHostName(urls[i])) {
+        return true;
+      }
+    } 
+    return false;
+  }
+
+  function extractHostName(url) {
+    var hostname;
+    //find & remove protocol (http, ftp, etc.) and get hostname
+    if (url.indexOf("//") > -1) {
+      hostname = url.split('/')[2];
+    }
+    else {
+      hostname = url.split('/')[0];
+    }
+
+    //find & remove port number
+    hostname = hostname.split(':')[0];
+    //find & remove "?"
+    hostname = hostname.split('?')[0];
+
+    return hostname;
   }
 
 });

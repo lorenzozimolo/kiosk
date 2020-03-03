@@ -1,8 +1,8 @@
 {
-  "name": "ZIKioskTest",
+  "name": "ZIKioskDev",
   "description": "Launch any URL as a full-screen kiosk.",
   "manifest_version": 2,
-  "version": "6.0.7",
+  "version": "6.0.8",
   "author": {
     "name": "Lorenzo Zimolo",
     "email": "lorenzo.zimolo@zoppas.com"
